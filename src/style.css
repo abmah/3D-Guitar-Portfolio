@@ -1,0 +1,238 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+
+}
+
+html,
+body {
+    overflow: hidden;
+    font-family: 'Cinzel', serif;
+}
+
+.webgl {
+    position: fixed;
+    top: 0;
+    left: 0;
+    outline: none;
+
+}
+
+.loading-bar {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    height: 2px;
+    background: #ffffff;
+    transform: scaleX(0.3);
+    transform-origin: top left;
+    transition: transform 0.5s;
+    z-index: 1;
+}
+
+.loading-bar.ended {
+    transform: scaleX(0);
+    transform-origin: 100% 0;
+    transition: transform 1.5s ease-in-out;
+}
+
+.computer-outer {
+    position: absolute;
+    width: calc(100% - 1px);
+    height: calc(100% - 8px);
+    border: 4px solid #052f11;
+}
+
+
+
+.computer {
+    width: calc(100% - 6px);
+    height: calc(100% - 5px);
+    background: #052f11;
+    z-index: 1;
+    animation-duration: 0.3s;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    animation-name: jittery;
+    z-index: -10;
+
+}
+
+.computer-dirt {
+    opacity: 0.15;
+
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    pointer-events: none;
+    position: absolute;
+    background-image: url(../static/smudg.jpg);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+
+}
+
+.computer-screen-reflection {
+    opacity: 0.5;
+
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    pointer-events: none;
+    position: absolute;
+    /* background-image: url(../s   tatic/reflection.png); */
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+/*credit henrey huffmen*/
+@keyframes jittery {
+    10% {
+        transform: translate(-0.1px, -0.15px);
+    }
+
+    20% {
+        transform: translate(0.15px, 0.1px);
+    }
+
+    30% {
+        transform: translate(-0.2px, -0.25px);
+    }
+
+    40% {
+        transform: translate(0.05px, 0.1px);
+    }
+
+    50% {
+        transform: translate(-0.025px, -0.05px);
+    }
+
+    60% {
+        transform: translate(0px, 0.075px);
+    }
+
+    70% {
+        transform: translate(-0.075px, -0.1px);
+    }
+
+    80% {
+        transform: translate(0.075px, 0.125px);
+    }
+
+    90% {
+        transform: translate(-0.125px, -0.075px);
+    }
+
+    100% {
+        transform: translate(0.075px, 0.025px);
+    }
+}
+
+.point {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    /* pointer-events: none; */
+    z-index: 100;
+}
+
+.point .label {
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #00000077;
+    border: 1px solid #ffffff77;
+    color: #ffffff;
+    font-family: 'Cinzel', serif;
+    text-align: center;
+    line-height: 40px;
+    font-weight: 100;
+    font-size: 14px;
+    cursor: help;
+    transform: scale(0, 0);
+    transition: transform 0.3s;
+}
+
+.point .text {
+    position: absolute;
+    top: 30px;
+    left: -120px;
+    width: 200px;
+    padding: 20px;
+    border-radius: 4px;
+    background: #00000077;
+    border: 1px solid #ffffff77;
+    color: #ffffff;
+    line-height: 1.3em;
+    font-family: 'Cinzel', serif;
+    font-weight: 100;
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+}
+
+.point:hover .text {
+    opacity: 1;
+}
+
+.point.visible .label {
+    transform: scale(1, 1);
+}
+
+
+
+.test {
+    position: fixed;
+    bottom: 30px;
+    left: 20px;
+    /* background-color: #1a1a1a; */
+    z-index: 100000000;
+    width: 200px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.test.disabled {
+    pointer-events: none;
+    opacity: .4;
+}
+
+.test>div {
+    margin-top: 5px;
+    width: 80px;
+    border: 1px solid #ffffff;
+    color: #ffffff;
+    font-family: 'Cinzel', serif;
+    font-weight: 100;
+    font-size: 14px;
+    cursor: pointer;
+    opacity: .4;
+    text-align: center;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    padding: 5px 0;
+}
+
+.test>div:hover {
+    background-color: #353434;
+    color: #ffffff;
+    opacity: 1;
+}
+
+.container {
+    width: 100vw;
+    height: 100vw;
+    overflow: none;
+
+}
