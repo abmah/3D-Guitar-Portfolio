@@ -1,10 +1,4 @@
-# Three.js Journey
-
-## Setup
-Download [Node.js](https://nodejs.org/en/download/).
-Run this followed commands:
-
-``` bash
+```bash
 # Install dependencies (only the first time)
 npm install
 
@@ -15,7 +9,7 @@ npm run dev
 npm run build
 ```
 
-  // let currentAnimation = 'rotation';
+// let currentAnimation = 'rotation';
 
     // let initialAction = actions[currentAnimation];
     // initialAction.setLoop(THREE.LoopRepeat);
@@ -46,34 +40,26 @@ npm run build
     //     }
     // });
 
-
 // let currentAnimationProgress = 0;
 
 // // add event listener to switch between animations if i click on the screen
 // window.addEventListener('click', () => {
-//     const nextAnimation = currentAnimation === 'rotation' ? 'zoom' : 'rotation';
-//     const nextAction = actions[nextAnimation];
+// const nextAnimation = currentAnimation === 'rotation' ? 'zoom' : 'rotation';
+// const nextAction = actions[nextAnimation];
 
-//     // Set the starting time for the new animation to match the progress of the current animation
-//     const nextAnimationStartTime = (currentAnimationProgress % nextAction._clip.duration);
+// // Set the starting time for the new animation to match the progress of the current animation
+// const nextAnimationStartTime = (currentAnimationProgress % nextAction.\_clip.duration);
 
-//     // fade out the current animation and fade in the new one
-//     actions[currentAnimation].crossFadeTo(nextAction, 1);
-//     nextAction.setEffectiveTimeScale(1);
-//     nextAction.time = nextAnimationStartTime;
-//     nextAction.play();
+// // fade out the current animation and fade in the new one
+// actions[currentAnimation].crossFadeTo(nextAction, 1);
+// nextAction.setEffectiveTimeScale(1);
+// nextAction.time = nextAnimationStartTime;
+// nextAction.play();
 
-//     // update the current animation and progress
-//     currentAnimation = nextAnimation;
-//     currentAnimationProgress = (actions[currentAnimation].time * actions[currentAnimation].getEffectiveTimeScale()) % actions[currentAnimation]._clip.duration;
+// // update the current animation and progress
+// currentAnimation = nextAnimation;
+// currentAnimationProgress = (actions[currentAnimation].time \* actions[currentAnimation].getEffectiveTimeScale()) % actions[currentAnimation].\_clip.duration;
 // });
-
-
-
-
-
-
-
 
 var camera, sceneGl, rendererGl;
 var sceneCss, rendererCss;
@@ -177,7 +163,6 @@ function animate() {
 
 }
 
-
 // const visited = new Set();
 
     // function traverseScene(child) {
@@ -241,7 +226,7 @@ function animate() {
 
 
 
-    
+
         // get the time elapsed in the current animation
         // const elapsed = currentAction.time % currentAction._clip.duration;
 
