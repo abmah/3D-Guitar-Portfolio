@@ -10,36 +10,32 @@ import { gsap } from 'gsap'
 
 
 let sceneReady = false;
+// Set up variables
+const loadingManager = new THREE.LoadingManager();
+// Loading 
+let loadingMessages = '';
+const loaderElement = document.querySelector('.intro-loader');
+loadingManager.onProgress = function (url, itemsLoaded, itemsTotal) {
+    const progress = Math.floor((itemsLoaded / itemsTotal) * 100); // Calculate the progress percentage
+    const message = 'Loading file: ' + url + '<br>Loaded ' + itemsLoaded + ' of ' + itemsTotal + ' files (' + progress + '%)';
+    loadingMessages += message + '<br>'; // Append the new loading message
 
+    loaderElement.innerHTML = loadingMessages; // Update the HTML content with all the loading messages
+};
+// Loaded
+loadingManager.onLoad = () => {
 
-const loadingBarElement = document.querySelector('.loading-bar')
-const loadingManager = new THREE.LoadingManager(
-    // Loaded
-    () => {
-        // Wait a little
-        window.setTimeout(() => {
-            // Animate overlay
-            gsap.to(overlayMaterial.uniforms.uAlpha, { duration: .1, value: 0, delay: 1 })
+    setTimeout(() => {
 
-            // Update loadingBarElement
-            loadingBarElement.classList.add('ended')
-            loadingBarElement.style.transform = ''
-            setTimeout(() => {
-                sceneReady = true;
-            }, 1500);
+        gsap.to(overlayMaterial.uniforms.uAlpha, { duration: 0.1, value: 0, delay: 1 });
+        loaderElement.remove();
+        setTimeout(() => {
+            sceneReady = true;
+        }, 1500);
 
-        }, 500)
-    },
+    }, 500);
+};
 
-    // Progress
-    (itemUrl, itemsLoaded, itemsTotal) => {
-        // Calculate the progress and update the loadingBarElement
-        const progressRatio = itemsLoaded / itemsTotal
-        loadingBarElement.style.transform = `scaleX(${progressRatio})`
-    }
-)
-
-// const cubeTextureLoader = new THREE.CubeTextureLoader(loadingManager)
 
 /**
  * Base
@@ -543,13 +539,10 @@ var material = new THREE.MeshBasicMaterial({
 var element = document.createElement('div');
 element.innerHTML = `
     <div class='computer-outer'>
-        <iframe class='computer' src="https://en.wikipedia.org/wiki/Three.js"></iframe>
+        <iframe class='computer' src="http://localhost:5050/"></iframe>
     </div>
     <div class="computer-dirt"></div>
     <div class="computer-screen-reflection"></div>
-
-    
- 
 `
 
 
@@ -564,14 +557,14 @@ element.style.opacity = 1;
 
 
 var object = new CSS3DObject(element);
-object.scale.set(0.000049, 0.000049, 0.000049)
+object.scale.set(0.000052, 0.000052, 0.000052)
 
 scene.add(object);
 
 var geometry = new THREE.PlaneGeometry(50, 50);
 
 
-geometry.scale(0.00049, 0.00049, 0.00049)
+geometry.scale(0.00052, 0.00052, 0.00052)
 
 var mesh = new THREE.Mesh(geometry, material);
 
