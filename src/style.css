@@ -1,15 +1,12 @@
-/* @import url('https://fonts.googleapis.com/css2?family=Cinzel&display=swap'); */
-
 * {
     margin: 0;
     padding: 0;
-
 }
 
 html,
 body {
     overflow: hidden;
-    /* font-family: 'Cinzel', serif; */
+    font-family: 'Courier New', Courier, monospace;
 }
 
 .webgl {
@@ -17,30 +14,24 @@ body {
     top: 0;
     left: 0;
     outline: none;
-
 }
 
 .intro-loader {
     position: fixed;
     top: 0;
-    left: 40%;
-    font-size: 20px;
-    color: #ffffffa7;
+    left: 20%;
+    font-size: 12px;
+    color: #ffffff;
     z-index: 10000000;
     text-align: left;
 }
-
-
 
 .computer-outer {
     position: absolute;
     width: calc(100% - 1px);
     height: calc(100% - 8px);
     border: 4px solid #052f11;
-
 }
-
-
 
 .computer {
     width: calc(100% - 6px);
@@ -53,12 +44,10 @@ body {
     animation-iteration-count: infinite;
     animation-name: jittery;
     z-index: -10;
-
 }
 
 .computer-dirt {
     opacity: 0.05;
-
     width: 100%;
     height: 100%;
     top: 0;
@@ -69,12 +58,10 @@ body {
     background-image: url(../static/smudg.jpg);
     background-repeat: no-repeat;
     background-size: 100% 100%;
-
 }
 
 .computer-screen-reflection {
     opacity: 0.5;
-
     width: 100%;
     height: 100%;
     top: 0;
@@ -82,12 +69,11 @@ body {
     z-index: 2;
     pointer-events: none;
     position: absolute;
-    /* background-image: url(../s   tatic/reflection.png); */
+    /* background-image: url(../static/reflection.png); */
     background-repeat: no-repeat;
     background-size: 100% 100%;
 }
 
-/*credit henrey huffmen*/
 @keyframes jittery {
     10% {
         transform: translate(-0.1px, -0.15px);
@@ -134,28 +120,30 @@ body {
     position: absolute;
     top: 50%;
     left: 50%;
-    /* pointer-events: none; */
     z-index: 100;
 }
 
 .point .label {
+    border-radius: 4;
     position: absolute;
     top: -20px;
     left: -20px;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: #00000077;
-    border: 1px solid #ffffff77;
+    padding: 5px;
+    min-width: 30px;
+
+    background: #161616d1;
     color: #ffffff;
     font-family: 'Cinzel', serif;
     text-align: center;
-    line-height: 40px;
     font-weight: 100;
     font-size: 14px;
     cursor: help;
     transform: scale(0, 0);
     transition: transform 0.3s;
+}
+
+.point:hover .label {
+    transform: scale(1, 1);
 }
 
 .point .text {
@@ -165,8 +153,7 @@ body {
     width: 200px;
     padding: 20px;
     border-radius: 4px;
-    background: #00000077;
-    border: 1px solid #ffffff77;
+    background: #161616d1;
     color: #ffffff;
     line-height: 1.3em;
     font-family: 'Cinzel', serif;
@@ -181,13 +168,19 @@ body {
     opacity: 1;
 }
 
+.text:hover {
+    opacity: 1;
+}
+
+.point.label:hover .text {
+    opacity: 1;
+}
+
 .point.visible .label {
     transform: scale(1, 1);
 }
 
-
-
-.test {
+.controler {
     position: fixed;
     bottom: 30px;
     left: 20px;
@@ -199,12 +192,12 @@ body {
     justify-content: space-around;
 }
 
-.test.disabled {
+.controler.disabled {
     pointer-events: none;
     opacity: .4;
 }
 
-.test>div {
+.controler>div {
     margin-top: 5px;
     width: 80px;
     border: 1px solid #ffffff;
@@ -219,7 +212,7 @@ body {
     padding: 5px 0;
 }
 
-.test>div:hover {
+.controler>div:hover {
     background-color: #353434;
     color: #ffffff;
     opacity: 1;
@@ -229,5 +222,8 @@ body {
     width: 100vw;
     height: 100vw;
     overflow: none;
+}
 
+.point.hidden {
+    display: none !important;
 }

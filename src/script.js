@@ -17,7 +17,7 @@ let loadingMessages = '';
 const loaderElement = document.querySelector('.intro-loader');
 loadingManager.onProgress = function (url, itemsLoaded, itemsTotal) {
     const progress = Math.floor((itemsLoaded / itemsTotal) * 100); // Calculate the progress percentage
-    const message = 'Loading file: ' + url + '<br>Loaded ' + itemsLoaded + ' of ' + itemsTotal + ' files (' + progress + '%)';
+    const message = 'Loading file: ' + url + '<br>Loaded... ' + itemsLoaded + ' of ' + itemsTotal + ' files (' + progress + '%)';
     loadingMessages += message + '<br>'; // Append the new loading message
 
     loaderElement.innerHTML = loadingMessages; // Update the HTML content with all the loading messages
@@ -31,6 +31,7 @@ loadingManager.onLoad = () => {
         loaderElement.remove();
         setTimeout(() => {
             sceneReady = true;
+
         }, 1500);
 
     }, 500);
@@ -64,33 +65,13 @@ dracoLoader.setDecoderPath('draco/')
 const gltfLoader = new GLTFLoader(loadingManager)
 gltfLoader.setDRACOLoader(dracoLoader)
 
-
-
+// Camera
 const camera = new THREE.PerspectiveCamera(25, window.innerWidth / window.innerHeight, 0.1, 100)
-const cameraGroup = new THREE.Group()
-cameraGroup.add(camera)
-scene.add(cameraGroup)
-// const fovControl = gui.add(camera, 'fov', 1, 180).name('FOV');
-
-// Listen for changes to the FOV control and update the camera
-// fovControl.onChange(() => {
-//     camera.updateProjectionMatrix();
-// });
-
 scene.add(camera)
+
 
 const textureLoader = new THREE.TextureLoader(loadingManager)
 
-// const bakedTexture = textureLoader.load('BakedSceneWithoutGuitar.jpg')
-// bakedTexture.flipY = false
-// const bakedGuitarRoom = textureLoader.load('GuitarRoom1.jpg')
-// bakedGuitarRoom.flipY = false
-// const computerTexture = textureLoader.load('Computer.jpg')
-// computerTexture.flipY = false
-
-// const bakedMaterial = new THREE.MeshBasicMaterial({ map: bakedTexture })
-// const bakedGuitarRoomMaterial = new THREE.MeshBasicMaterial({ map: bakedGuitarRoom })
-// const computer = new THREE.MeshBasicMaterial({ map: computerTexture })
 
 // Loading screen
 const overlayGeometry = new THREE.PlaneGeometry(2, 2, 1, 1)
@@ -119,35 +100,32 @@ const overlay = new THREE.Mesh(overlayGeometry, overlayMaterial)
 scene.add(overlay)
 
 // Audio
-
 const listener = new THREE.AudioListener();
 camera.add(listener);
 
-
 const audioLoader = new THREE.AudioLoader(loadingManager);
 
-const ComputerFanAudio = new THREE.PositionalAudio(listener);
+// Computer Fan Audio
+const computerFanAudio = new THREE.PositionalAudio(listener);
 audioLoader.load('background1.mp3', function (buffer) {
-    ComputerFanAudio.setBuffer(buffer);
-    ComputerFanAudio.setLoop(true);
-    ComputerFanAudio.setVolume(2);
-    ComputerFanAudio.setRefDistance(.05);
-
-    ComputerFanAudio.play();
+    computerFanAudio.setBuffer(buffer);
+    computerFanAudio.setLoop(true);
+    computerFanAudio.setVolume(2);
+    computerFanAudio.setRefDistance(0.05);
+    computerFanAudio.play();
 });
-ComputerFanAudio.position.set(-0.060315653681755066, 0.8590562343597412, -0.10443098098039627)
-scene.add(ComputerFanAudio);
+computerFanAudio.position.set(-0.060315653681755066, 0.8590562343597412, -0.10443098098039627);
+scene.add(computerFanAudio);
 
+// Door Open Audio
 const doorOpenAudio = new THREE.PositionalAudio(listener);
 audioLoader.load('door4.mp3', function (buffer) {
     doorOpenAudio.setBuffer(buffer);
     doorOpenAudio.setLoop(false);
     doorOpenAudio.setVolume(0.4);
     doorOpenAudio.setRefDistance(8);
-
-
 });
-doorOpenAudio.position.set(-0.53, -0.05865, -1.34297)
+doorOpenAudio.position.set(-0.53, -0.05865, -1.34297);
 scene.add(doorOpenAudio);
 
 
@@ -187,92 +165,68 @@ const stringMaterial = new THREE.ShaderMaterial({
         }
     `,
 });
-// add gui controls for the shader uniforms
-// const stringFolder = gui.addFolder('string')
-// stringFolder.add(stringMaterial.uniforms.amplitude, 'value').min(0).max(1).step(0.001).name('amplitude')
-// stringFolder.add(stringMaterial.uniforms.frequency, 'value').min(0).max(100).step(0.001).name('frequency')
 
 
+function createMaterialWithTexture(texturePath) {
+    const texture = textureLoader.load(texturePath);
+    texture.flipY = false;
+    return new THREE.MeshBasicMaterial({ map: texture });
+}
 
-const islandTreeTexture = textureLoader.load('GroundTree.jpg')
-islandTreeTexture.flipY = false
-const islandTreeMaterial = new THREE.MeshBasicMaterial({ map: islandTreeTexture })
+const islandTreeMaterial = createMaterialWithTexture('GroundTree.jpg');
+const guitarOutsideMaterial = createMaterialWithTexture('GuitarOutside.jpg');
+const sceneObjectsMaterial = createMaterialWithTexture('SceneObjects.jpg');
+const floorMaterial = createMaterialWithTexture('Floor.jpg');
+const woodMaterial = createMaterialWithTexture('GuitarWood.jpg');
+const guitarInsideMaterial = createMaterialWithTexture('GuitarInside.jpg');
 
-const guitarOutsideTexture = textureLoader.load('GuitarOutside.jpg')
-guitarOutsideTexture.flipY = false
-const guitarOutsideMaterial = new THREE.MeshBasicMaterial({ map: guitarOutsideTexture })
-
-const sceneObjectsTexture = textureLoader.load('SceneObjects.jpg')
-sceneObjectsTexture.flipY = false
-const sceneObjectsMaterial = new THREE.MeshBasicMaterial({ map: sceneObjectsTexture })
-
-const floorTexture = textureLoader.load('Floor.jpg')
-floorTexture.flipY = false
-const floorMaterial = new THREE.MeshBasicMaterial({ map: floorTexture })
-
-const woodTexture = textureLoader.load('GuitarWood.jpg')
-woodTexture.flipY = false
-const WoodMaterial = new THREE.MeshBasicMaterial({ map: woodTexture })
-
-const guitarInsideTexture = textureLoader.load('GuitarInside.jpg')
-guitarInsideTexture.flipY = false
-const guitarInsideMaterial = new THREE.MeshBasicMaterial({ map: guitarInsideTexture })
 
 const point_3 = document.querySelector('.point-3')
-// console.log(guitarMaterial1)
-
-gltfLoader.load('final.glb', (gltf) => {
 
 
+gltfLoader.load('32.glb', (gltf) => {
 
 
     scene.add(gltf.scene);
 
     console.log(gltf)
 
-    //IslandTree
-    // Guitar Outside
-    // Object
-    // Floor
-
 
     gltf.scene.traverse((child) => {
-        if (child.name.startsWith("TreeIsland")) {
-            child.traverse((grandChild) => {
-
-                grandChild.material = islandTreeMaterial;
-            })
-        } else if (child.name.startsWith("GuitarOutside")) {
-            child.traverse((grandChild) => {
-
-                grandChild.material = guitarOutsideMaterial;
-
-            })
-        } else if (child.name.startsWith("RandomObjects")) {
-
-
-            child.material = sceneObjectsMaterial;
-
-        } else if (child.name.startsWith("Floor")) {
-
-
-            child.material = floorMaterial;
-
-
+        switch (true) {
+            case child.name.startsWith("TreeIsland"):
+                child.traverse((grandChild) => {
+                    grandChild.material = islandTreeMaterial;
+                });
+                break;
+            case child.name.startsWith("GuitarOutside"):
+                child.traverse((grandChild) => {
+                    grandChild.material = guitarOutsideMaterial;
+                });
+                break;
+            case child.name.startsWith("RandomObjects"):
+                child.material = sceneObjectsMaterial;
+                break;
+            case child.name.startsWith("Floor"):
+                child.material = floorMaterial;
+                break;
+            case child.name.startsWith("123"):
+                child.material = stringMaterial;
+                break;
+            case child.name.startsWith("just"):
+                child.material = woodMaterial;
+                break;
+            case child.name.startsWith("inside"):
+                child.material = guitarInsideMaterial;
+                child.traverse((grandChild) => {
+                    grandChild.material = guitarInsideMaterial;
+                });
+                break;
+            default:
+                break;
         }
-        else if (child.name.startsWith("123")) {
-            child.material = stringMaterial;
+    });
 
-        }
-        else if (child.name.startsWith('just')) {
-            child.material = WoodMaterial
-        } else if (child.name.startsWith('inside')) {
-            child.material = guitarInsideMaterial
-            child.traverse((grandChild) => {
-                grandChild.material = guitarInsideMaterial;
-            })
-        }
-    })
 
     cameraMixer = new THREE.AnimationMixer(camera);
     sceneMixer = new THREE.AnimationMixer(gltf.scene)
@@ -282,11 +236,6 @@ gltfLoader.load('final.glb', (gltf) => {
     doorOpenAnimation.clampWhenFinished = true;
 
 
-    // Add animations to the mixer
-
-
-    // Improved camera animations
-
     // find by name please
     const cameraRotationAnimation = cameraMixer.clipAction(gltf.animations.find((clip) => clip.name === 'CameraRotation'));
     const cameraGetIn = cameraMixer.clipAction(gltf.animations.find((clip) => clip.name === 'CameraGetIn'));
@@ -294,19 +243,21 @@ gltfLoader.load('final.glb', (gltf) => {
     const cameraMusicRoom = cameraMixer.clipAction(gltf.animations.find((clip) => clip.name === 'CameraMusicRoom'));
     const cameraBedroom = cameraMixer.clipAction(gltf.animations.find((clip) => clip.name === 'CameraBedRoom'));
     const cameraCredits = cameraMixer.clipAction(gltf.animations.find((clip) => clip.name === 'CameraCredits'));
-
+    const cameraProjects = cameraMixer.clipAction(gltf.animations.find((clip) => clip.name === 'cameraProjects'));
 
     cameraGetIn.setLoop(THREE.LoopOnce);
     cameraComputerRoom.setLoop(THREE.LoopOnce);
     cameraMusicRoom.setLoop(THREE.LoopOnce);
     cameraBedroom.setLoop(THREE.LoopOnce);
     cameraCredits.setLoop(THREE.LoopOnce);
+    cameraProjects.setLoop(THREE.LoopOnce);
 
     cameraGetIn.clampWhenFinished = true;
     cameraComputerRoom.clampWhenFinished = true;
     cameraMusicRoom.clampWhenFinished = true;
     cameraBedroom.clampWhenFinished = true;
     cameraCredits.clampWhenFinished = true;
+    cameraProjects.clampWhenFinished = true;
 
 
     CameraActions = {
@@ -316,6 +267,7 @@ gltfLoader.load('final.glb', (gltf) => {
         musicRoom: cameraMusicRoom,
         bedroom: cameraBedroom,
         credits: cameraCredits,
+        projects: cameraProjects,
 
     };
 
@@ -337,14 +289,15 @@ gltfLoader.load('final.glb', (gltf) => {
     point_3.addEventListener('click', () => {
 
         point_3.classList.remove('visible')
+        point_3.classList.add('hidden')
 
 
         doorOpenAnimation.play();
 
         doorOpenAudio.play();
         setTimeout(() => {
-            switchCameraAnimation('getIn');
-
+            switchCameraAnimation('projects');
+            cameraController.classList.remove('disabled')
         }, 1000);
 
 
@@ -381,7 +334,7 @@ const switchCameraAnimation = (animationName) => {
 
 
 
-    if (currentCameraAnimation === "getIn" || currentCameraAnimation === "rotation") {
+    if (currentCameraAnimation === "getIn" || currentCameraAnimation === "rotation" || currentCameraAnimation === "projects") {
         sceneReady = true;
     } else {
         sceneReady = false;
@@ -399,7 +352,8 @@ const cameraController = document.querySelector('#controller')
 
 const projects = document.querySelector('#projects');
 projects.addEventListener('click', () => {
-    switchCameraAnimation('getIn');
+    console.log('projects');
+    switchCameraAnimation('projects');
 });
 
 
@@ -423,15 +377,14 @@ credits.addEventListener('click', () => {
     switchCameraAnimation('credits');
 });
 
-const outside = document.querySelector('#outside');
-outside.addEventListener('click', () => {
-    switchCameraAnimation('rotation');
+// const outside = document.querySelector('#outside');
+// outside.addEventListener('click', () => {
+//     switchCameraAnimation('rotation');
 
-});
+// });
 
 point_3.addEventListener('click', () => {
     switchCameraAnimation('getIn');
-
 });
 
 
@@ -723,10 +676,6 @@ const onClick = (event) => {
         }
 
         animateStrings()
-        // make a function that makes the uniform value frequency in the stringshader change to 5 then decreses it to 0 over 1 second
-
-
-
 
     } else if (intersects[0].object.name.startsWith("piano")) {
         console.log('play piano sound')
