@@ -498,7 +498,7 @@ var material = new THREE.MeshBasicMaterial({
 var element = document.createElement('div');
 element.innerHTML = `
     <div class='computer-outer'>
-        <iframe class='computer' src="https://fastidious-khapse-ab23e4.netlify.app/"></iframe>
+        <iframe class='computer' src="http://localhost:5050/"></iframe>
     </div>
     <div class="computer-dirt"></div>
     <div class="computer-screen-reflection"></div>
