@@ -1,6 +1,6 @@
 
 import './style.css'
-import * as dat from 'lil-gui'
+// import * as dat from 'lil-gui'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
@@ -29,10 +29,13 @@ loadingManager.onLoad = () => {
 
         gsap.to(overlayMaterial.uniforms.uAlpha, { duration: 0.1, value: 0, delay: 1 });
         loaderElement.remove();
+        CameraActions[currentCameraAnimation].play();
+        setTimeout(() => {
+            switchCameraAnimation('rotation');
+        }, 3000);
         setTimeout(() => {
             sceneReady = true;
-
-        }, 1500);
+        }, 3500);
 
     }, 500);
 };
@@ -131,11 +134,6 @@ scene.add(doorOpenAudio);
 
 // Model
 
-let cameraMixer;
-let CameraActions;
-let sceneMixer;
-let currentCameraAnimation = 'rotation';
-
 
 const stringMaterial = new THREE.ShaderMaterial({
     uniforms: {
@@ -183,15 +181,18 @@ const guitarInsideMaterial = createMaterialWithTexture('GuitarInside.jpg');
 
 const point_3 = document.querySelector('.point-3')
 
+let cameraMixer;
+let CameraActions;
+let sceneMixer;
+let currentCameraAnimation = 'intro';
 
-gltfLoader.load('32.glb', (gltf) => {
+
+
+gltfLoader.load('fullModel.glb', (gltf) => {
 
 
     scene.add(gltf.scene);
-
     console.log(gltf)
-
-
     gltf.scene.traverse((child) => {
         switch (true) {
             case child.name.startsWith("TreeIsland"):
@@ -244,6 +245,7 @@ gltfLoader.load('32.glb', (gltf) => {
     const cameraBedroom = cameraMixer.clipAction(gltf.animations.find((clip) => clip.name === 'CameraBedRoom'));
     const cameraCredits = cameraMixer.clipAction(gltf.animations.find((clip) => clip.name === 'CameraCredits'));
     const cameraProjects = cameraMixer.clipAction(gltf.animations.find((clip) => clip.name === 'cameraProjects'));
+    const cameraIntro = cameraMixer.clipAction(gltf.animations.find((clip) => clip.name === 'cameraInitFromOutside'));
 
     cameraGetIn.setLoop(THREE.LoopOnce);
     cameraComputerRoom.setLoop(THREE.LoopOnce);
@@ -251,6 +253,7 @@ gltfLoader.load('32.glb', (gltf) => {
     cameraBedroom.setLoop(THREE.LoopOnce);
     cameraCredits.setLoop(THREE.LoopOnce);
     cameraProjects.setLoop(THREE.LoopOnce);
+    cameraIntro.setLoop(THREE.LoopOnce);
 
     cameraGetIn.clampWhenFinished = true;
     cameraComputerRoom.clampWhenFinished = true;
@@ -258,6 +261,9 @@ gltfLoader.load('32.glb', (gltf) => {
     cameraBedroom.clampWhenFinished = true;
     cameraCredits.clampWhenFinished = true;
     cameraProjects.clampWhenFinished = true;
+    cameraIntro.clampWhenFinished = true;
+
+    cameraIntro.timeScale = 1.2;
 
 
     CameraActions = {
@@ -268,12 +274,13 @@ gltfLoader.load('32.glb', (gltf) => {
         bedroom: cameraBedroom,
         credits: cameraCredits,
         projects: cameraProjects,
+        intro: cameraIntro
 
     };
 
     // set initial camera animation
     CameraActions[currentCameraAnimation].enabled = true;
-    CameraActions[currentCameraAnimation].play();
+
 
     // const animationController = gui.add(
     //     { animation: 'rotation' },
@@ -290,13 +297,12 @@ gltfLoader.load('32.glb', (gltf) => {
 
         point_3.classList.remove('visible')
         point_3.classList.add('hidden')
-
-
+        cameraController.classList.add('visible')
         doorOpenAnimation.play();
-
         doorOpenAudio.play();
+
         setTimeout(() => {
-            switchCameraAnimation('projects');
+            switchCameraAnimation('getIn');
             cameraController.classList.remove('disabled')
         }, 1000);
 
@@ -492,7 +498,7 @@ var material = new THREE.MeshBasicMaterial({
 var element = document.createElement('div');
 element.innerHTML = `
     <div class='computer-outer'>
-        <iframe class='computer' src="http://localhost:5050/"></iframe>
+        <iframe class='computer' src="https://fastidious-khapse-ab23e4.netlify.app/"></iframe>
     </div>
     <div class="computer-dirt"></div>
     <div class="computer-screen-reflection"></div>
