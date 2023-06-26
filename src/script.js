@@ -145,10 +145,10 @@ audioLoader.load('noise.mp3', function (buffer) {
     backgroundNoiseAudio.setLoop(true);
     backgroundNoiseAudio.setVolume(1);
     backgroundNoiseAudio.setRefDistance(.1);
-    backgroundNoiseAudio.play();
+    // backgroundNoiseAudio.play();
 });
 backgroundNoiseAudio.position.set(3, 3, 3)
-scene.add(backgroundNoiseAudio);
+// scene.add(backgroundNoiseAudio);
 
 
 // Model
