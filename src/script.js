@@ -35,16 +35,17 @@ const startButton = document.querySelector('.start-button');
 startButton.addEventListener('click', () => {
     startButton.classList.remove('visible');
 
+
     gsap.to(overlayMaterial.uniforms.uAlpha, { duration: 0.1, value: 0, delay: 1 });
 
     CameraActions[currentCameraAnimation].play();
+    woosh.play();
     setTimeout(() => {
         switchCameraAnimation('rotation');
     }, 3000);
     setTimeout(() => {
         sceneReady = true;
     }, 3500);
-
 });
 
 /**
@@ -322,7 +323,7 @@ gltfLoader.load('fullModel.glb', (gltf) => {
 
         setTimeout(() => {
             switchCameraAnimation('getIn');
-            cameraController.classList.remove('disabled')
+
         }, 1000);
 
 
@@ -341,12 +342,16 @@ gltfLoader.load('fullModel.glb', (gltf) => {
 const switchCameraAnimation = (animationName) => {
     if (currentCameraAnimation === animationName) return; // Do nothing if the animation is already playing
 
+
     if (controls) {
         if (controls.enabled) {
             controls.enabled = false;
 
         }
 
+    }
+    if (currentCameraAnimation === '') {
+        currentCameraAnimation = 'getIn'
     }
 
     const nextAction = CameraActions[animationName];
@@ -415,18 +420,23 @@ point_3.addEventListener('click', () => {
 
 function classlistaddremove() {
     console.log(CameraActions[currentCameraAnimation]._clip.duration)
-    const duration = CameraActions[currentCameraAnimation]._clip.duration
 
+    const duration = CameraActions[currentCameraAnimation]._clip.duration
+    console.log(duration)
+    console.log(currentCameraAnimation)
     cameraController.classList.add('disabled')
 
     setTimeout(() => {
         cameraController.classList.remove('disabled')
-    }, duration * 1000 - 1000);
+        console.log('done' + duration)
+    }, duration * 1000);
 
 }
 
 const freeRoam = document.querySelector('#freeRoam');
 freeRoam.addEventListener('click', () => {
+
+    currentCameraAnimation = ''
 
     // stop all animations and enable controls
     for (const animation of Object.values(CameraActions)) {
@@ -517,7 +527,7 @@ var material = new THREE.MeshBasicMaterial({
 var element = document.createElement('div');
 element.innerHTML = `
     <div class='computer-outer'>
-        <iframe class='computer' src="http://localhost:5050/"></iframe>
+        <iframe class='computer' src="https://6499f9e9cc19e50095cacbee--enchanting-mandazi-01da60.netlify.app/"></iframe>
     </div>
     <div class="computer-dirt"></div>
     <div class="computer-screen-reflection"></div>
@@ -528,6 +538,8 @@ element.style.width = '500px';
 
 element.style.height = '500px';
 element.style.opacity = 1;
+
+
 
 // element.style.scale = '0.96';
 
@@ -593,6 +605,8 @@ rendererCss.domElement.appendChild(renderer.domElement);
 rendererCss.domElement.style.pointerEvents = 'all';
 
 
+
+
 // element.addEventListener('mouseenter', () => {
 //     console.log('controles disabled')
 //     controls.enabled = false;
@@ -634,7 +648,7 @@ function animateStrings() {
 // load audio file the normal js way
 
 const audio2 = new Audio('EString.mp3');
-
+const woosh = new Audio('woosh.mp3');
 
 // make fog and add it to the scene
 const fog = new THREE.Fog('#201919', 20, 44)
@@ -682,7 +696,8 @@ const onClick = (event) => {
 
 
     // console.log(intersects[0].object.name)
-    if (intersects[0].object.name.startsWith("Librarystring") || intersects[0].object.name.startsWith("123")) {
+    if (intersects[0].object.name.startsWith("Librarystring") || intersects[0].object.name.startsWith("123") || intersects[0].object.name.startsWith("insideLibraryPlane041") || intersects[0].object.name.startsWith("insideLibrarystringNeck")) {
+
         console.log(intersects[0].object.name)
         // play audio
 
@@ -781,6 +796,9 @@ scene.add(sceneFloor)
 
 const controls = new OrbitControls(camera, rendererCss.domElement)
 controls.enabled = false
+
+
+
 
 
 
