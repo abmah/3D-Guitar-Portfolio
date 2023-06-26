@@ -24,22 +24,28 @@ loadingManager.onProgress = function (url, itemsLoaded, itemsTotal) {
 };
 // Loaded
 loadingManager.onLoad = () => {
+    loaderElement.remove();
+    startButton.classList.add('visible');
 
-    setTimeout(() => {
-
-        gsap.to(overlayMaterial.uniforms.uAlpha, { duration: 0.1, value: 0, delay: 1 });
-        loaderElement.remove();
-        CameraActions[currentCameraAnimation].play();
-        setTimeout(() => {
-            switchCameraAnimation('rotation');
-        }, 3000);
-        setTimeout(() => {
-            sceneReady = true;
-        }, 3500);
-
-    }, 500);
 };
 
+// start button class .start-button.visible
+
+const startButton = document.querySelector('.start-button');
+startButton.addEventListener('click', () => {
+    startButton.classList.remove('visible');
+
+    gsap.to(overlayMaterial.uniforms.uAlpha, { duration: 0.1, value: 0, delay: 1 });
+
+    CameraActions[currentCameraAnimation].play();
+    setTimeout(() => {
+        switchCameraAnimation('rotation');
+    }, 3000);
+    setTimeout(() => {
+        sceneReady = true;
+    }, 3500);
+
+});
 
 /**
  * Base
@@ -110,7 +116,7 @@ const audioLoader = new THREE.AudioLoader(loadingManager);
 
 // Computer Fan Audio
 const computerFanAudio = new THREE.PositionalAudio(listener);
-audioLoader.load('background1.mp3', function (buffer) {
+audioLoader.load('computer.mp3', function (buffer) {
     computerFanAudio.setBuffer(buffer);
     computerFanAudio.setLoop(true);
     computerFanAudio.setVolume(2);
@@ -122,7 +128,7 @@ scene.add(computerFanAudio);
 
 // Door Open Audio
 const doorOpenAudio = new THREE.PositionalAudio(listener);
-audioLoader.load('door4.mp3', function (buffer) {
+audioLoader.load('door.mp3', function (buffer) {
     doorOpenAudio.setBuffer(buffer);
     doorOpenAudio.setLoop(false);
     doorOpenAudio.setVolume(0.4);
@@ -130,6 +136,19 @@ audioLoader.load('door4.mp3', function (buffer) {
 });
 doorOpenAudio.position.set(-0.53, -0.05865, -1.34297);
 scene.add(doorOpenAudio);
+
+// backgound noise ambient
+const backgroundNoiseAudio = new THREE.PositionalAudio(listener);
+
+audioLoader.load('noise.mp3', function (buffer) {
+    backgroundNoiseAudio.setBuffer(buffer);
+    backgroundNoiseAudio.setLoop(true);
+    backgroundNoiseAudio.setVolume(1);
+    backgroundNoiseAudio.setRefDistance(.1);
+    backgroundNoiseAudio.play();
+});
+backgroundNoiseAudio.position.set(3, 3, 3)
+scene.add(backgroundNoiseAudio);
 
 
 // Model
@@ -762,6 +781,9 @@ scene.add(sceneFloor)
 
 const controls = new OrbitControls(camera, rendererCss.domElement)
 controls.enabled = false
+
+
+
 const tick = () => {
 
     if (cameraMixer) {

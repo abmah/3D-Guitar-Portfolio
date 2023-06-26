@@ -129,7 +129,6 @@ body {
     left: -20px;
     padding: 5px;
     min-width: 30px;
-
     background: #161616d1;
     color: #ffffff;
     font-family: 'Cinzel', serif;
@@ -231,4 +230,40 @@ body {
 
 .point.hidden {
     display: none !important;
+}
+
+.start-button {
+    border-radius: 4;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    z-index: 2;
+    padding: 5px;
+    min-width: 30px;
+
+    background: #161616d1;
+    color: #ffffff;
+    font-family: 'Cinzel', serif;
+    text-align: center;
+    font-weight: 100;
+    font-size: 14px;
+    cursor: pointer;
+
+    transition: transform 0.3s;
+    transform: scale(0, 0);
+}
+
+.start-button.visible {
+    transform: scale(1, 1);
+
+}
+
+.start-button:hover {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+.start-button:active {
+    transform: scale(0.98, 0.98);
 }
