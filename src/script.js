@@ -597,9 +597,9 @@ mesh.rotation.copy(object.rotation)
 // screenFolder.add(mesh.rotation, 'z').min(-5).max(5).step(0.01).name('z').onFinishChange(() => {
 //     object.rotation.z = mesh.rotation.z
 // })
+let container = document.getElementById('container');
 
-
-document.body.appendChild(rendererCss.domElement);
+container.appendChild(rendererCss.domElement);
 
 rendererCss.domElement.appendChild(renderer.domElement);
 rendererCss.domElement.style.pointerEvents = 'all';
